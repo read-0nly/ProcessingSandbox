@@ -5,12 +5,12 @@ import processing.video.*;
   int sleepDelay = 300;
 
 //BadDiv Params
-  boolean BadDiv_Switch = true;
+  boolean BadDiv_Switch = false;
   
-  //float BadDiv_FactorMin = 0.003;  float BadDiv_FactorMax = 0.005;  float BadDiv_FactorStep = 0.00001;float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; // LightNoise
-  //float BadDiv_FactorMin = 1.007;  float BadDiv_FactorMax = 1.010;  float BadDiv_FactorStep = 0.00001;float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; float BadDiv_ColorFactor = 0.0;// Green/Pink Deepfry
+  //float BadDiv_FactorMin = 0.003;  float BadDiv_FactorMax = 0.005;  float BadDiv_FactorStep = 0.00001;float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; float BadDiv_ColorFactor = 0.0; boolean BadDiv_RanShift=true; // LightNoise
+  float BadDiv_FactorMin = 1.005;  float BadDiv_FactorMax = 1.015;  float BadDiv_FactorStep = 0.00005;float BadDiv_ShiftMin = -2;  float BadDiv_ShiftMax = 9; float BadDiv_ColorFactor = 0.6; boolean BadDiv_RanShift=true;// Green/Pink Deepfry
   //float BadDiv_FactorMin = 1.007;  float BadDiv_FactorMax = 1.010;   float BadDiv_FactorStep = 0.0001;float BadDiv_ShiftMin = 180;  float BadDiv_ShiftMax = -180; float BadDiv_ColorFactor = 0.5; boolean BadDiv_RanShift=false;// GhostTwin
-  float BadDiv_FactorMin = 2.03;  float BadDiv_FactorMax = 2.07;  float BadDiv_FactorStep = 0.0001;  float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; float BadDiv_ColorFactor = 0.5; boolean BadDiv_RanShift=true;// Acid Purples
+  //float BadDiv_FactorMin = 2.03;  float BadDiv_FactorMax = 2.07;  float BadDiv_FactorStep = 0.0001;  float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; float BadDiv_ColorFactor = 0.5; boolean BadDiv_RanShift=true;// Acid Purples
   float BadDiv_Factor =BadDiv_FactorMin;  
   float BadDiv_RedFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
   float BadDiv_GreenFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
@@ -173,15 +173,6 @@ float ColorGrav_CircularAverage(float a, float b, float portionA, float max){
 
 //Core Functions
 void setup(){
-  //Confirm Color Mode (locks other filters out)
-  if(ColorGrav_Switch)
-  {
-    BadDiv_Switch = false;
-    GlitchTrail_Switch = false;
-    GlitchNet_Switch = false;
-    colorMode(HSB, ColorGrav_ModeMax);
-  }
-   
   // Set Canvas
   background(0); 
   size(640, 480);
@@ -191,8 +182,59 @@ void setup(){
   img.start();     
 }     
 void draw() {  
+  //Confirm Color Mode (locks other filters out)
+  if(ColorGrav_Switch)
+  {
+  }
+  else{   
+  }
   if (img.available() == true) {
     //init pixels
+    
+    if ((keyPressed == true)) {
+      switch(key){ //<>//
+        case 'q':{
+          BadDiv_Switch=true;
+          break;
+        }
+        case 'a':{
+          BadDiv_Switch=false;
+          break;
+        }
+        case 'w':{
+          GlitchTrail_Switch=true;
+          break;
+        }
+        case 's':{
+          GlitchTrail_Switch=false;
+          break;
+        }
+        case 'e':{
+          GlitchNet_Switch=true;
+          break;
+        }
+        case 'd':{
+          GlitchNet_Switch=false;
+          break;
+        }
+        case 'r':{
+          ColorGrav_Switch=true;
+          BadDiv_Switch = false;
+          GlitchTrail_Switch = false;
+          GlitchNet_Switch = false;
+          colorMode(HSB, ColorGrav_ModeMax);
+          break;
+        }
+        case 'f':{
+          ColorGrav_Switch=false;
+          BadDiv_Switch = false;
+          GlitchTrail_Switch = false;
+          GlitchNet_Switch = false;
+          colorMode(RGB, 255);  
+          break;
+        } //<>//
+      }
+    }
     img.read();
     loadPixels(); 
     img.loadPixels();
