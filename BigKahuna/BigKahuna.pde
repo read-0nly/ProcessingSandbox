@@ -7,17 +7,14 @@ import processing.video.*;
 //BadDiv Params
   boolean BadDiv_Switch = true;
   
-  //float BadDiv_FactorMin = 0.003;  float BadDiv_FactorMax = 0.005;  float BadDiv_FactorStep = 0.00001; // Green/Pink Deepfry
-  //float BadDiv_FactorMin = 1.007;  float BadDiv_FactorMax = 1.010;  float BadDiv_FactorStep = 0.00001; // LightNoise
-  float BadDiv_FactorMin = 2.03;  float BadDiv_FactorMax = 2.07;  float BadDiv_FactorStep = 0.0001; // Acid Purples
-
-  float BadDiv_Factor =BadDiv_FactorMin;
-  
-  float BadDiv_ShiftMin = 0;
-  float BadDiv_ShiftMax = 0;
-  float BadDiv_RedFactor = 0.9;
-  float BadDiv_GreenFactor = 0.9;
-  float BadDiv_BlueFactor = 0.9;
+  //float BadDiv_FactorMin = 0.003;  float BadDiv_FactorMax = 0.005;  float BadDiv_FactorStep = 0.00001;float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; // LightNoise
+  //float BadDiv_FactorMin = 1.007;  float BadDiv_FactorMax = 1.010;  float BadDiv_FactorStep = 0.00001;float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; float BadDiv_ColorFactor = 0.0;// Green/Pink Deepfry
+  //float BadDiv_FactorMin = 1.007;  float BadDiv_FactorMax = 1.010;   float BadDiv_FactorStep = 0.0001;float BadDiv_ShiftMin = 180;  float BadDiv_ShiftMax = -180; float BadDiv_ColorFactor = 0.5; boolean BadDiv_RanShift=false;// GhostTwin
+  float BadDiv_FactorMin = 2.03;  float BadDiv_FactorMax = 2.07;  float BadDiv_FactorStep = 0.0001;  float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; float BadDiv_ColorFactor = 0.5; boolean BadDiv_RanShift=true;// Acid Purples
+  float BadDiv_Factor =BadDiv_FactorMin;  
+  float BadDiv_RedFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
+  float BadDiv_GreenFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
+  float BadDiv_BlueFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
 
 //GlitchTrail Params
   boolean  GlitchTrail_Switch = false;
@@ -52,7 +49,17 @@ import processing.video.*;
     println(BadDiv_Factor);
   }  
   void BadDiv_SetPix(int x, int y){
-    int shift =int(random(-BadDiv_ShiftMin,BadDiv_ShiftMax));
+    
+    int shift =0;
+    if(!BadDiv_RanShift){
+      if(boolean(int(random(0,2)))){
+       shift= int(-BadDiv_ShiftMin);
+      }else{        
+       shift= int(BadDiv_ShiftMax);
+      }
+    }else{
+      shift =int(random(-BadDiv_ShiftMin,BadDiv_ShiftMax));
+    }
     int loc = x + y*width;
     int loc2 = ((x+shift)%width)+y*width;
     int z = int((GetColorAt(safeLoc(loc))+GetColorAt(safeLoc(loc2)))/BadDiv_Factor);
@@ -158,6 +165,9 @@ float ColorGrav_CircularAverage(float a, float b, float portionA, float max){
     
   }
   int safeLoc(int loc){
+    if(loc<0){
+     loc = (width*height)+loc;
+    }
     return loc%(width*height);
   }
 
