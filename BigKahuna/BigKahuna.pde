@@ -182,12 +182,7 @@ void setup(){
   img.start();     
 }     
 void draw() {  
-  //Confirm Color Mode (locks other filters out)
-  if(ColorGrav_Switch)
-  {
-  }
-  else{   
-  }
+  
   if (img.available() == true) {
     //init pixels
     
