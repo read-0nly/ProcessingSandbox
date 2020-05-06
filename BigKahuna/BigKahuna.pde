@@ -1,16 +1,30 @@
+import javax.swing.JOptionPane;
 import processing.video.*;
+
+//Mode Strings
+//BadDiv
+/*
+100;1000;0.05;0;0;0.7;true; Pink and Gold
+0.003;0.005;0.00001;0;0;0;true; LightNoise
+1.007;1.010;0.0001;180;-180;0.5;false; GhostTwin
+2.03;2.07;0.0001;0;0;0.5;true; Acid Purples
+*/
+//GlitchTrail
+/*
+0.999999999999999999;10;1;-4;3;150;0.8;0;  //BigRed
+*/
+//GlitchNet
+//ColorGrav
+
+
 
 //Initial definition
   Capture img;
-  int sleepDelay = 300;
-
+  int sleepDelay = 100;
+  
 //BadDiv Params
   boolean BadDiv_Switch = false;
-  
-  //float BadDiv_FactorMin = 0.003;  float BadDiv_FactorMax = 0.005;  float BadDiv_FactorStep = 0.00001;float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; float BadDiv_ColorFactor = 0.0; boolean BadDiv_RanShift=true; // LightNoise
   float BadDiv_FactorMin = 1.005;  float BadDiv_FactorMax = 1.015;  float BadDiv_FactorStep = 0.00005;float BadDiv_ShiftMin = -2;  float BadDiv_ShiftMax = 9; float BadDiv_ColorFactor = 0.6; boolean BadDiv_RanShift=true;// Green/Pink Deepfry
-  //float BadDiv_FactorMin = 1.007;  float BadDiv_FactorMax = 1.010;   float BadDiv_FactorStep = 0.0001;float BadDiv_ShiftMin = 180;  float BadDiv_ShiftMax = -180; float BadDiv_ColorFactor = 0.5; boolean BadDiv_RanShift=false;// GhostTwin
-  //float BadDiv_FactorMin = 2.03;  float BadDiv_FactorMax = 2.07;  float BadDiv_FactorStep = 0.0001;  float BadDiv_ShiftMin = -0;  float BadDiv_ShiftMax = 0; float BadDiv_ColorFactor = 0.5; boolean BadDiv_RanShift=true;// Acid Purples
   float BadDiv_Factor =BadDiv_FactorMin;  
   float BadDiv_RedFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
   float BadDiv_GreenFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
@@ -190,26 +204,32 @@ void draw() {
       switch(key){ //<>//
         case 'q':{
           BadDiv_Switch=true;
+          key = '~'; keyPressed = false;
           break;
         }
         case 'a':{
           BadDiv_Switch=false;
+          key = '~'; keyPressed = false;
           break;
         }
         case 'w':{
           GlitchTrail_Switch=true;
+          key = '~'; keyPressed = false;
           break;
         }
         case 's':{
           GlitchTrail_Switch=false;
+          key = '~'; keyPressed = false;
           break;
         }
         case 'e':{
           GlitchNet_Switch=true;
+          key = '~'; keyPressed = false;
           break;
         }
         case 'd':{
           GlitchNet_Switch=false;
+          key = '~'; keyPressed = false;
           break;
         }
         case 'r':{
@@ -218,6 +238,7 @@ void draw() {
           GlitchTrail_Switch = false;
           GlitchNet_Switch = false;
           colorMode(HSB, ColorGrav_ModeMax);
+          key = '~'; keyPressed = false;
           break;
         }
         case 'f':{
@@ -226,6 +247,17 @@ void draw() {
           GlitchTrail_Switch = false;
           GlitchNet_Switch = false;
           colorMode(RGB, 255);  
+          key = '~'; keyPressed = false;
+          break;
+        }
+        case 'z':{
+          getModeString();
+          key = '~'; keyPressed = false;
+          break;
+        }
+        case '~':{
+          println("looping");
+          key = '~'; keyPressed = false;          
           break;
         } //<>//
       }
@@ -253,7 +285,75 @@ void draw() {
   catch(Exception e){}
 }
 
-
+void getModeString(){
+  
+  /*if(BadDiv_Switch){BadDiv_SetPix(x,y);}
+  else if(GlitchTrail_Switch){GlitchTrail_SetPix(x,y);}
+  else if(GlitchNet_Switch){GlitchNet_SetPix(x,y);}
+  else if(ColorGrav_Switch){ColorGrav_SetPix(x,y);}*/
+  String[] possibilities = {"BadDiv", "GlitchTrail", "GlitchNet","ColorGrav"};
+  String s = (String)JOptionPane.showInputDialog(
+    frame,
+    "Pick the mode to configure",
+    "Mode Config String",
+    JOptionPane.PLAIN_MESSAGE,
+    null,
+    possibilities,
+    "BadDiv");
+  switch(s){
+   case "BadDiv":{
+   String s2 = (String)JOptionPane.showInputDialog(
+      frame,
+      "Enter values seperated by semi-colon:\n"+
+      "BadDiv_FactorMin;BadDiv_FactorMax;BadDiv_FactorStep;BadDiv_ShiftMin;BadDiv_ShiftMax;BadDiv_ColorFactor;BadDiv_RanShift;",
+      "Mode Config String",
+      JOptionPane.PLAIN_MESSAGE,
+      null,
+      null,
+      "BadDiv");
+      String[] s2Arr = s2.split(";");
+      BadDiv_FactorMin = float(s2Arr[0]);
+      BadDiv_FactorMax = float(s2Arr[1]);
+      BadDiv_FactorStep = float(s2Arr[2]);
+      BadDiv_ShiftMin = float(s2Arr[3]);
+      BadDiv_ShiftMax = float(s2Arr[4]);
+      BadDiv_ColorFactor = float(s2Arr[5]); 
+      BadDiv_RedFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
+      BadDiv_GreenFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
+      BadDiv_BlueFactor = (BadDiv_ColorFactor<0.01? 0.7 : BadDiv_ColorFactor);
+      BadDiv_RanShift = (s2Arr[6]=="true"?true:false);
+    break; 
+   }
+   case "GlitchTrail":{
+   String s2 = (String)JOptionPane.showInputDialog(
+      frame,
+      "Enter values seperated by semi-colon:\n"+
+      "GlitchTrail_Decay;GlitchTrail_Delay;GlitchTrail_Echo;GlitchTrail_RanMin;GlitchTrail_RanMax;GlitchTrail_ExcludeThreshold;GlitchTrail_ExcludeAmount;GlitchTrail_Buffer",
+      "Mode Config String",
+      JOptionPane.PLAIN_MESSAGE,
+      null,
+      null,
+      "BadDiv");
+      String[] s2Arr = s2.split(";");     
+    GlitchTrail_Decay = float(s2Arr[0]);
+    GlitchTrail_Delay = int(float(s2Arr[1]));
+    GlitchTrail_Echo = int(float(s2Arr[2]));
+    GlitchTrail_RanMin = int(float(s2Arr[3]));
+    GlitchTrail_RanMax = int(float(s2Arr[4]));
+    GlitchTrail_ExcludeThreshold = int(float(s2Arr[5]));
+    GlitchTrail_ExcludeAmount = float(s2Arr[6]);
+    GlitchTrail_Buffer = int(float(s2Arr[7]));
+    break; 
+   }
+   case "GlitchNet":{
+    break; 
+   }
+   case "ColorGrav":{
+    break; 
+   }
+    
+  }
+}
 
 
  // saveFrame("c:\\temp\\rotDiv2\\rotDiv-"+int(factor*10000)+".png");
