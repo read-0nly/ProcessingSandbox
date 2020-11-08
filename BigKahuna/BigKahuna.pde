@@ -7,6 +7,7 @@ import processing.video.*;
 100;1000;0.05;0;0;0.7;true; Pink and Gold
 0.003;0.005;0.00001;0;0;0;true; LightNoise
 1.007;1.010;0.0001;180;-180;0.5;false; GhostTwin
+2.00;2.10;0.00005;0;0;0.5;true; Acid Purples
 2.03;2.07;0.0001;0;0;0.5;true; Acid Purples
 */
 //GlitchTrail
