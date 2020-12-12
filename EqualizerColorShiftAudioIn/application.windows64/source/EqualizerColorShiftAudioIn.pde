@@ -50,7 +50,7 @@ void draw() {
    for( int x = 0; x < width; x++){
      int loc =  x + y*width;
      int loc2 = x + (y*width) + int(normalized*25);
-      loc2 = loc2+(width*height); //<>//
+      loc2 = loc2+(width*height);
       float r = red(myMovie.pixels[loc]);
       float g = green(myMovie.pixels[(loc2%(width*height))]);//myMovie.pixels[loc]);
       float b = blue(myMovie.pixels[(loc2%(width*height))]);//myMovie.pixels[loc]);
