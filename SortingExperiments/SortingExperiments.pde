@@ -5,10 +5,13 @@
   int step=0;
   int maxStep = 35565;
   int maxIndex=0;
-  boolean hueTargeted=true;
+  boolean hueTargeted=false;
   float targetHue = 110;
   float targetDistance=30;
   float colorWidth = 255;
+  boolean wasSorting = true;
+  boolean stillSorting = true;
+ 
   
   void loadFile(){
     String file = ((String)JOptionPane.showInputDialog(
@@ -64,30 +67,43 @@
   void setup() {
     colorMode(HSB,colorWidth);
     drawImage();
+    surface.setTitle("Sorting");
   }
   
   void draw() {
-    loadPixels();
+    img.loadPixels();
+    wasSorting = stillSorting;
+    stillSorting = false;
     for (int x =0; x<width; x++) {
       int[] column = new int[height]; 
       for (int y = height-1; y>0; y--) {      
         //bubbleSort(x,y);
-        column[y]=pixels[((x+(y*width))%maxIndex)];
+        column[y]=img.pixels[((x+(y*width))%maxIndex)];
       }
   
       if (step < column.length-1 && step<maxStep) {
+        
         int[] result = selectSort(column, step);
         for(int i = 0; i<result.length;i++){
-          pixels[((x+(i*width))%maxIndex)]=result[i];
+          img.pixels[((x+(i*width))%maxIndex)]=result[i];
         }
       }
     }
         step++;
-    updatePixels();
+    if(wasSorting != stillSorting){
+      if(!stillSorting){
+        surface.setTitle("Done!");
+        drawImage();
+      }else{     
+        drawImage();
+        surface.setTitle("Sorting"); 
+      }
+    }    
+    
+    img.updatePixels();
   }
   
   void bubbleSort(int x, int y) {
-  
     if (y>1) {
       if (
         hue(pixels[((x+(y*width))%maxIndex)])
@@ -97,6 +113,7 @@
         int pixel = pixels[((x+((y-1)*width)))];
         pixels[((x+((y-1)*width))%maxIndex)] = pixels[((x+(y*width)))];
         pixels[((x+(y*width)))] = pixel;
+        stillSorting=true;
       }
     }
   }
@@ -140,6 +157,7 @@
           int bucket = pixelsToSort[curstep];
           pixelsToSort[curstep]=pixelsToSort[mindex];
           pixelsToSort[mindex]=bucket;
+        stillSorting=true;
         }
   
         break;
@@ -160,6 +178,8 @@
           int bucket = pixelsToSort[curstep];
           pixelsToSort[curstep]=pixelsToSort[mindex];
           pixelsToSort[mindex]=bucket;
+          
+          stillSorting=true;
         }
   
         break;
@@ -180,6 +200,7 @@
           int bucket = pixelsToSort[curstep];
           pixelsToSort[curstep]=pixelsToSort[mindex];
           pixelsToSort[mindex]=bucket;
+        stillSorting=true;
         }
   
         break;
@@ -200,6 +221,7 @@
           int bucket = pixelsToSort[curstep];
           pixelsToSort[curstep]=pixelsToSort[mindex];
           pixelsToSort[mindex]=bucket;
+        stillSorting=true;
         }
   
         break;
@@ -220,6 +242,7 @@
           int bucket = pixelsToSort[curstep];
           pixelsToSort[curstep]=pixelsToSort[mindex];
           pixelsToSort[mindex]=bucket;
+        stillSorting=true;
         }
   
         break;
@@ -240,6 +263,7 @@
           int bucket = pixelsToSort[curstep];
           pixelsToSort[curstep]=pixelsToSort[mindex];
           pixelsToSort[mindex]=bucket;
+        stillSorting=true;
         }
   
         break;
@@ -260,6 +284,7 @@
           int bucket = pixelsToSort[curstep];
           pixelsToSort[curstep]=pixelsToSort[mindex];
           pixelsToSort[mindex]=bucket;
+        stillSorting=true;
         }
       }
     }
